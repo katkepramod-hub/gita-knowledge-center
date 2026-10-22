@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Bhagavad Gita Knowledge Center</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #131c2e;
+      --card-border: #1e293b;
+      --gold: #f59e0b;
+      --gold-light: #fef3c7;
+      --saffron: #f97316;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px 40px;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    header {
+      text-align: center;
+      padding: 12px 0 8px;
+    }
+    .om-badge {
+      font-size: 2.2rem;
+      color: var(--gold);
+      display: inline-block;
+      margin-bottom: 4px;
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.4));
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      display: block;
+      margin-bottom: 8px;
+    }
+    textarea {
+      width: 100%;
+      height: 110px;
+      background: #090e17;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      resize: vertical;
+      outline: none;
+      transition: border 0.2s;
+    }
+    textarea:focus {
+      border-color: var(--gold);
+    }
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .chip {
+      background: #1e293b;
+      color: #cbd5e1;
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+    .chip:active {
+      transform: scale(0.96);
+      background: var(--gold);
+      color: #000;
+    }
+    button.submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 14px;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+      transition: opacity 0.2s;
+    }
+    button.submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .spinner {
+      display: none;
+      text-align: center;
+      padding: 24px;
+      color: var(--gold);
+      font-size: 0.9rem;
+    }
+    .spinner.active { display: block; }
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .shloka-box {
+      background: #090e17;
+      border: 1px solid #243247;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+    .sanskrit {
+      color: var(--gold);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      text-align: center;
+      white-space: pre-line;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .transliteration {
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-style: italic;
+      text-align: center;
+      white-space: pre-line;
+      margin-bottom: 12px;
+    }
+    .translation {
+      font-size: 0.92rem;
+      color: #f8fafc;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .commentary {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+      border-left: 2px solid var(--gold);
+      padding-left: 8px;
+      margin-top: 6px;
+    }
+    .step-item {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+    .mantra-card {
+      background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(249,115,22,0.05));
+      border: 1px solid rgba(245,158,11,0.3);
+      text-align: center;
+      padding: 16px;
+      border-radius: 14px;
+    }
+    .mantra-text {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="om-badge">ॐ</div>
+      <h1>Bhagavad Gita Knowledge Center</h1>
+      <p class="subtitle">Spiritual counseling for modern life dilemmas</p>
+    </header>
+
+    <div class="card">
+      <label for="problemInput">What life challenge is on your mind?</label>
+      <textarea id="problemInput" placeholder="Describe your anxiety, sorrow, career pressure, burnout, relationship struggle, or confusion..."></textarea>
+
+      <div class="quick-chips">
+        <span class="chip" onclick="setQuery('I worked 14 hours a day on my startup but our launch failed completely. I feel anxious, like a failure, and terrified of what others will think.')">🚀 Startup Failure</span>
+        <span class="chip" onclick="setQuery('I recently lost a very dear person in my life and I feel an overwhelming void and sorrow. Nothing seems meaningful.')">💔 Grief & Loss</span>
+        <span class="chip" onclick="setQuery('My mind won't stop racing with overthinking and worries about the future. I can't focus and suffer from insomnia.')">🌀 Overthinking & Focus</span>
+        <span class="chip" onclick="setQuery('I have so much anger and bitterness towards someone who betrayed me, and it is consuming my peace of mind.')">🔥 Resentment & Anger</span>
+      </div>
+
+      <button id="submitBtn" class="submit-btn" onclick="seekGuidance()">Seek Gita's Counsel</button>
+    </div>
+
+    <div id="spinner" class="spinner">
+      <div>Contemplating the eternal wisdom of Kurukshetra...</div>
+    </div>
+
+    <div id="results" class="results" style="display:none;"></div>
+
+    <footer>
+      ॥ यतो धर्मस्ततो जयः ॥ — Where there is righteousness, there is victory.
+    </footer>
+  </div>
+
+  <script>
+let currentQueryId = "";
+
+function setQuery(text) {
+  document.getElementById("problemInput").value = text;
+  document.getElementById("problemInput").focus();
+}
+
+async function seekGuidance() {
+  const input = document.getElementById("problemInput").value.trim();
+  if (!input) return;
+
+  const btn = document.getElementById("submitBtn");
+  const spinner = document.getElementById("spinner");
+  const resultsDiv = document.getElementById("results");
+
+  btn.disabled = true;
+  spinner.classList.add("active");
+  resultsDiv.style.display = "none";
+
+  try {
+    const response = await fetch("/api/v1/counsel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ problem: input, top_k: 2 })
+    });
+
+    if (!response.ok) throw new Error("Failed to retrieve counsel");
+    const data = await response.json();
+    renderResults(data);
+  } catch (err) {
+    alert("Could not connect to server. Please check your connection or wait 30 seconds if the free server is waking up.");
+  } finally {
+    btn.disabled = false;
+    spinner.classList.remove("active");
+  }
+}
+
+function renderResults(data) {
+  const resultsDiv = document.getElementById("results");
+  currentQueryId = data.query_id || "";
+  let html = "";
+
+  // Card 1: Diagnosis & Arjuna Analogy
+  html += '<div class="card">' +
+    '<span class="badge">1. Diagnosis</span>' +
+    '<div class="section-title">' + (data.detected_emotions ? data.detected_emotions.join(" • ") : "Life Guidance") + '</div>' +
+    '<p style="font-size:0.88rem; color:#cbd5e1; margin-bottom:12px;"><strong>Root Cause:</strong> ' + (data.philosophical_diagnosis || "") + '</p>' +
+    '<div style="background:#090e17; padding:12px; border-radius:10px; border-left:3px solid var(--saffron);">' +
+      '<div style="font-size:0.8rem; font-weight:700; color:var(--saffron); margin-bottom:4px;">THE KURUKSHETRA MIRROR: ARJUNA DILEMMA</div>' +
+      '<p style="font-size:0.85rem; color:#cbd5e1; line-height:1.4;">' + (data.arjuna_analogy || "") + '</p>' +
+    '</div>' +
+  '</div>';
+
+  // Card 2: Divine Shlokas
+  html += '<div class="card">' +
+    '<span class="badge">2. Divine Prescriptions</span>' +
+    '<div class="section-title">Relevant Bhagavad Gita Verses</div>';
+
+  if (data.matched_verses && data.matched_verses.length > 0) {
+    data.matched_verses.forEach(function(v) {
+      html += '<div class="shloka-box">' +
+        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
+          '<span style="font-weight:700; font-size:0.9rem; color:#fff;">' + v.citation + '</span>' +
+          '<span class="badge" style="margin:0;">' + v.yoga_branch + '</span>' +
+        '</div>' +
+        '<div class="sanskrit">' + v.sanskrit + '</div>' +
+        '<div class="transliteration">' + v.transliteration + '</div>' +
+        '<div class="translation"><strong>Translation:</strong> "' + v.english_translation + '"</div>' +
+        '<div class="commentary"><strong>Spiritual Meaning:</strong> ' + v.philosophical_meaning + '</div>' +
+      '</div>';
+    });
+  }
+  html += '</div>';
+
+  // Card 3: Actionable Roadmap
+  html += '<div class="card">' +
+    '<span class="badge">3. Daily Practice</span>' +
+    '<div class="section-title">Actionable Roadmap (Sadhana)</div>';
+
+  if (data.practical_action_steps && data.practical_action_steps.length > 0) {
+    data.practical_action_steps.forEach(function(step) {
+      html += '<div class="step-item">' + step + '</div>';
+    });
+  }
+  html += '</div>';
+
+  // Card 4: Contemplation Mantra
+  html += '<div class="mantra-card">' +
+    '<div style="font-size:0.75rem; color:var(--gold); font-weight:700; margin-bottom:4px;">DAILY CONTEMPLATION SEED</div>' +
+    '<div class="mantra-text">' + (data.contemplation_mantra || "") + '</div>' +
+  '</div>';
+
+  // Card 5: Feedback Widget
+  html += '<div class="card" id="feedbackCard" style="text-align:center; padding:16px;">' +
+    '<div style="font-size:0.85rem; font-weight:600; color:#fff; margin-bottom:10px;">Was this guidance helpful for your dilemma?</div>' +
+    '<div style="display:flex; justify-content:center; gap:12px; margin-bottom:8px;">' +
+      '<button type="button" class="chip" style="font-size:0.85rem; padding:8px 16px; background:#1e293b;" onclick="sendFeedback(1)">👍 Helpful</button>' +
+      '<button type="button" class="chip" style="font-size:0.85rem; padding:8px 16px; background:#1e293b;" onclick="sendFeedback(-1)">👎 Needs Improvement</button>' +
+    '</div>' +
+    '<div id="feedbackThanks" style="display:none; font-size:0.8rem; color:var(--gold); margin-top:6px;">Thank you for your feedback! It helps improve the Gita Counselor.</div>' +
+  '</div>';
+
+  // Card 6: Disclaimer
+  html += '<div style="font-size:0.75rem; color:#64748b; line-height:1.4; text-align:center; padding:8px 12px; border:1px solid #1e293b; border-radius:10px;">' +
+    '<strong>Spiritual Wellness Notice:</strong> This platform offers philosophical contemplation rooted in the Bhagavad Gita to nurture inner resilience. It is not a substitute for clinical psychiatric or psychological therapy.' +
+  '</div>';
+
+  resultsDiv.innerHTML = html;
+  resultsDiv.style.display = "flex";
+  resultsDiv.scrollIntoView({ behavior: "smooth" });
+}
+
+async function sendFeedback(rating) {
+  if (!currentQueryId) return;
+  try {
+    await fetch("/api/v1/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query_id: currentQueryId, rating: rating, comment: "" })
+    });
+    const thanks = document.getElementById("feedbackThanks");
+    if (thanks) thanks.style.display = "block";
+  } catch(e) {}
+}
+
+  </script>
+</body>
+</html>
